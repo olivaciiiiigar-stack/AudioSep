@@ -1,0 +1,21 @@
+[project]
+name = "audioai"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "audio-separator[gpu]>=0.41.1",
+    "customtkinter>=5.2.2",
+    "packaging>=26.0",
+    "pyinstaller>=6.18.0",
+    "torch>=2.10.0",
+]
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu128" }
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true

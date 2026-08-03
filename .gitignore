@@ -1,0 +1,29 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Build artifacts
+build/
+dist/
+
+# Local tool configs
+.claude/
+.continue/
+
+# Generated / runtime output
+output/
+
+# Audio, voice data and model weights — large and often personal/copyrighted, never commit
+audio/
+original_voice/
+models/
+*.flac
+*.wav
+*.ogg
+*.mp3
+*.m4a
+*.pth
+*.onnx
+*.ckpt
+*.index
