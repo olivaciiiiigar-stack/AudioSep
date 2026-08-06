@@ -15,8 +15,7 @@ dist/
 output/
 
 # Audio, voice data and model weights — large and often personal/copyrighted, never commit
-audio/
-original_voice/
+data/
 models/
 *.flac
 *.wav
