@@ -26,3 +26,6 @@ models/
 *.onnx
 *.ckpt
 *.index
+
+# 本地路径配置
+config.json
