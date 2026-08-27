@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['gui.py'],
+    ['app.py'],
     pathex=[],
     binaries=[],
     datas=[],
@@ -22,7 +22,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='AudioSep',
+    name='AI翻唱工坊',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
