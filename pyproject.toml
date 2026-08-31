@@ -5,7 +5,10 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "audio-separator[gpu]>=0.41.1",
+    # onnxruntime-gpu 没有 macOS 轮子，mac 上必须走 cpu extra；
+    # 分离用的 torch 那侧照样吃 MPS，onnx 那侧走 CoreML
+    "audio-separator[gpu]>=0.41.1; sys_platform != 'darwin'",
+    "audio-separator[cpu]>=0.41.1; sys_platform == 'darwin'",
     "customtkinter>=5.2.2",
     "packaging>=26.0",
     "pyinstaller>=6.18.0",
@@ -13,7 +16,8 @@ dependencies = [
 ]
 
 [tool.uv.sources]
-torch = { index = "pytorch-cu128" }
+# CUDA 轮子只在 Windows/Linux 上装，mac 用 PyPI 官方的 arm64 轮子（自带 MPS）
+torch = [{ index = "pytorch-cu128", marker = "sys_platform != 'darwin'" }]
 
 [[tool.uv.index]]
 name = "pytorch-cu128"
