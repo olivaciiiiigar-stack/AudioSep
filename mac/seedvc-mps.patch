@@ -1,0 +1,29 @@
+diff --git a/inference.py b/inference.py
+index 84d673b..c6c97ab 100644
+--- a/inference.py
++++ b/inference.py
+@@ -101,8 +101,11 @@ def load_models(args):
+         bigvgan_model = bigvgan.BigVGAN.from_pretrained(bigvgan_name, use_cuda_kernel=False)
+         # remove weight norm in the model and set to eval mode
+         bigvgan_model.remove_weight_norm()
+-        bigvgan_model = bigvgan_model.eval().to(device)
+-        vocoder_fn = bigvgan_model
++        # Torch 2.5 MPS rejects long grouped transposed convolutions in BigVGAN.
++        # Keep diffusion on MPS and run waveform synthesis on CPU.
++        vocoder_device = torch.device("cpu") if device.type == "mps" else device
++        bigvgan_model = bigvgan_model.eval().to(vocoder_device)
++        vocoder_fn = lambda mel: bigvgan_model(mel.to(vocoder_device))
+     elif vocoder_type == 'hifigan':
+         from modules.hifigan.generator import HiFTGenerator
+         from modules.hifigan.f0_predictor import ConvRNNF0Predictor
+@@ -326,8 +329,8 @@ def main(args):
+         F0_ori = f0_fn(ori_waves_16k[0], thred=0.03)
+         F0_alt = f0_fn(converted_waves_16k[0], thred=0.03)
+ 
+-        F0_ori = torch.from_numpy(F0_ori).to(device)[None]
+-        F0_alt = torch.from_numpy(F0_alt).to(device)[None]
++        F0_ori = torch.from_numpy(F0_ori.astype(np.float32)).to(device)[None]
++        F0_alt = torch.from_numpy(F0_alt.astype(np.float32)).to(device)[None]
+ 
+         voiced_F0_ori = F0_ori[F0_ori > 1]
+         voiced_F0_alt = F0_alt[F0_alt > 1]

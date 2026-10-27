@@ -32,3 +32,6 @@ models/
 
 # 本地路径配置
 config.json
+
+# Independent upstream voice conversion checkout and its model cache
+tools/seed-vc/
